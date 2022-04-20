@@ -12,6 +12,7 @@ public class ContainerProvider
   {
     var serviceCollection = new ServiceCollection();
     serviceCollection.AddSingleton<LiveFeedViewModel>();
+    serviceCollection.AddSingleton<ProcessedImageFeedViewModel>();
     serviceCollection.AddSingleton<MainWindowViewModel>();
     serviceCollection.AddSingleton<IOperationsService, OperationsService>();
     serviceCollection.AddSingleton<IImageProcessor, ImageProcessor>();

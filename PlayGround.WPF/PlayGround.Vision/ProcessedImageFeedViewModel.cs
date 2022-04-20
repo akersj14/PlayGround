@@ -1,24 +1,24 @@
-﻿using ReactiveUI;
-using System.Reactive.Disposables;
+﻿using System.Reactive.Disposables;
 using System.Windows.Media.Imaging;
+using ReactiveUI;
 
 namespace PlayGround.Vision;
 
-public class LiveFeedViewModel : ReactiveObject, IDisposable
+public class ProcessedImageFeedViewModel : ReactiveObject, IDisposable
 {
-    private readonly ObservableAsPropertyHelper<BitmapImage> _backingOriginalImage;
+    private readonly ObservableAsPropertyHelper<BitmapImage> _backingProcessedImage;
     private readonly CompositeDisposable _compositeDisposable = new();
     private readonly IVideoService _videoService;
 
-    public LiveFeedViewModel(IVideoService videoService)
+    public ProcessedImageFeedViewModel(IVideoService videoService)
     {
         _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
-        _backingOriginalImage = _videoService.OriginalImage.ToProperty(this, nameof(OriginalImage));
+        _backingProcessedImage = _videoService.ProcessedImage.ToProperty(this, nameof(ProcessedImage));
         if (!_videoService.IsPlaying)
             _videoService.Play(true);
     }
 
-    public BitmapImage OriginalImage => _backingOriginalImage.Value;
+    public BitmapImage ProcessedImage => _backingProcessedImage.Value;
 
     public void Dispose()
     {

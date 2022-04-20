@@ -1,11 +1,11 @@
-﻿<reactiveUi:ReactiveUserControl x:Class="PlayGround.WPF.LiveFeed"
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="vision:ProcessedImageFeedViewModel" x:Class="PlayGround.WPF.ProcessedImageFeed"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                xmlns:local="clr-namespace:PlayGround.WPF"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:vision="clr-namespace:PlayGround.Vision;assembly=PlayGround.Vision"
-                                x:TypeArguments="vision:LiveFeedViewModel"
                                 mc:Ignorable="d">
-    <Image Name="OriginalImage" />
+    <Image Name="ProcessedImage"/>
 </reactiveUi:ReactiveUserControl>

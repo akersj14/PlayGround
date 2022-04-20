@@ -1,49 +1,63 @@
-﻿using System.Drawing;
-using System.Reactive.Disposables;
+﻿using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System.Drawing;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Media.Imaging;
-using OpenCvSharp;
-using OpenCvSharp.Extensions;
 
 namespace PlayGround.Vision;
 
 public interface IVideoService : IDisposable
 {
-  Task Play();
-  IObservable<BitmapImage> Image { get; }
+  Task Play(bool withProcessing);
+  IObservable<BitmapImage> OriginalImage { get; }
+  IObservable<BitmapImage> ProcessedImage { get; }
+  bool IsDisposed { get; }
+  bool IsPlaying { get; }
 }
 
 public class VideoService : IVideoService
 {
   private readonly VideoCapture _videoCapture;
-  private readonly Subject<BitmapImage> _backingImage = new();
+  private readonly Subject<BitmapImage> _backingOriginalImage = new();
+  private readonly Subject<BitmapImage> _backingProcessedImage = new();
   private readonly int _sleepTime;
   private readonly IImageProcessor _imageProcessor;
 
   public VideoService(IImageProcessor imageProcessor)
   {
     _imageProcessor = imageProcessor ?? throw new ArgumentNullException(nameof(imageProcessor));
-    Image = _backingImage.AsObservable();
+    OriginalImage = _backingOriginalImage.AsObservable();
+    ProcessedImage = _backingProcessedImage.AsObservable();
     _videoCapture = VideoCapture.FromCamera(0);
     _sleepTime = (int)Math.Round(1000 / _videoCapture.Fps);
+    IsDisposed = false;
   }
-  public async Task Play()
+
+  public async Task Play(bool withProcessing)
   {
+    IsPlaying = true;
     using var frame = new Mat();
     while (_videoCapture.IsOpened())
     {
       if (_videoCapture.Read(frame))
       {
-        var result = _imageProcessor.Process(frame);
-        _backingImage.OnNext(BitmapToImageSource(result.ToBitmap()));
-        result.Dispose();
+        _backingOriginalImage.OnNext(BitmapToImageSource(frame.ToBitmap()));
+        if (withProcessing)
+        {
+          var result = _imageProcessor.Process(frame);
+          _backingProcessedImage.OnNext(BitmapToImageSource(result.ToBitmap()));
+          result.Dispose();
+        }
       }
       await Task.Delay(_sleepTime);
     }
   }
 
-  public IObservable<BitmapImage> Image { get; }
+  public IObservable<BitmapImage> OriginalImage { get; }
+  public IObservable<BitmapImage> ProcessedImage { get; }
+  public bool IsDisposed { get; private set; }
+  public bool IsPlaying { get; private set; }
 
   private static BitmapImage BitmapToImageSource(Image bitmap)
   {
@@ -62,6 +76,8 @@ public class VideoService : IVideoService
   }
   public void Dispose()
   {
+    IsPlaying = false;
+    IsDisposed = true;
     _videoCapture.Dispose();
   }
 }

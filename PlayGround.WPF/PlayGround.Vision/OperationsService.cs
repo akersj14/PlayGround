@@ -1,6 +1,4 @@
-﻿using DynamicData;
-
-namespace PlayGround.Vision;
+﻿namespace PlayGround.Vision;
 
 public interface IOperationsService
 {

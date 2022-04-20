@@ -14,5 +14,8 @@
     <mah:MetroTabItem Header="Live Feed">
       <local:LiveFeed />
     </mah:MetroTabItem>
+    <mah:MetroTabItem Header="Processed Feed">
+      <local:ProcessedImageFeed />
+    </mah:MetroTabItem>
   </mah:MetroTabControl>
 </mah:MetroWindow>
