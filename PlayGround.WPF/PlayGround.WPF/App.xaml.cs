@@ -1,5 +1,8 @@
-﻿using PlayGround.Core;
+﻿using System.Reflection;
+using PlayGround.Core;
 using System.Windows;
+using ReactiveUI;
+using Splat;
 
 namespace PlayGround.WPF;
 
@@ -13,6 +16,7 @@ public partial class App
   protected override void OnStartup(StartupEventArgs e)
   {
     _containerProvider = new ContainerProvider();
+    Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
     base.OnStartup(e);
   }
 

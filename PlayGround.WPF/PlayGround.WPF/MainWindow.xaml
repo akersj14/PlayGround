@@ -12,10 +12,14 @@
                  mc:Ignorable="d">
   <mah:MetroTabControl>
     <mah:MetroTabItem Header="Live Feed">
-      <local:LiveFeed />
+        
+        <local:LiveFeed />
     </mah:MetroTabItem>
     <mah:MetroTabItem Header="Processed Feed">
-      <local:ProcessedImageFeed />
+      <StackPanel Orientation="Horizontal">
+        <local:ProcessedImageFeed />
+        <local:AppliedFilters/>
+      </StackPanel>
     </mah:MetroTabItem>
   </mah:MetroTabControl>
 </mah:MetroWindow>
