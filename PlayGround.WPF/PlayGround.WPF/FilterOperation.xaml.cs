@@ -23,6 +23,10 @@ public partial class FilterOperation
                     model => model.Remove,
                     view => view.RemoveButton)
                 .DisposeWith(disposable);
+            this.OneWayBind(ViewModel,
+                    model => model.Errored,
+                    view => view.RedDot.Visibility)
+                .DisposeWith(disposable);
         });
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
 
@@ -16,6 +17,7 @@ public class AppliedFiltersViewModel : ReactiveObject, IDisposable
         operationsService
             .Operations
             .Connect()
+            .Distinct()
             .Transform(item => new FilterOperationViewModel(item, operationsService))
             .Bind(out _backingFilterNames)
             .Subscribe()

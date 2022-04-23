@@ -15,12 +15,16 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            <TextBlock Name="RedDot" Grid.Column="0" Foreground="Red" Visibility="Collapsed">
+                <iconPacks:Coolicons Kind="Dot01Xs" />
+            </TextBlock>
             <Label Name="MainLabel"
-                   Grid.Column="0"
+                   Grid.Column="1"
                    FontFamily="{DynamicResource MahApps.Fonts.Family.Button}"
                    FontSize="{DynamicResource MahApps.Font.Size.Default}"/>
             <Button Name="OptionsButton" 

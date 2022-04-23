@@ -1,4 +1,6 @@
-﻿using OpenCvSharp;
+﻿using System.Reactive.Disposables;
+using System.Reactive.Subjects;
+using OpenCvSharp;
 
 namespace PlayGround.Vision;
 
@@ -6,6 +8,7 @@ public interface IOperation
 {
   Mat Operate(Mat mat);
   int Id { get; set; }
+  bool Errored { get; }
 }
 
 public class KeepSame : IOperation
@@ -16,6 +19,7 @@ public class KeepSame : IOperation
   }
 
   public int Id { get; set; }
+  public bool Errored => false;
 }
 public class Blur : IOperation
 {
@@ -24,23 +28,34 @@ public class Blur : IOperation
     return mat.Blur(new Size(100, 100));
   } 
   public int Id { get; set; }
+  public bool Errored => false;
 }
-public class GrayScale : IOperation
+public class GrayScale : IOperation, IDisposable
 {
+  private readonly Subject<bool> _backingErrored = new();
+  private readonly CompositeDisposable _compositeDisposable = new();
+  public GrayScale()
+  {
+    _backingErrored.Subscribe(error => Errored = error).DisposeWith(_compositeDisposable);
+  }
   public Mat Operate(Mat mat)
   {
     try
     {
       var gray = mat.CvtColor(ColorConversionCodes.BGRA2GRAY);
+      _backingErrored.OnNext(false);
       return gray;
     }
     catch (Exception)
     {
+      _backingErrored.OnNext(true);
       return mat.Clone();
     }
   }
 
   public int Id { get; set; }
+  public bool Errored { get; private set; }
+  public void Dispose() => _compositeDisposable.Dispose();
 }
 public class Canny : IOperation
 {
@@ -48,7 +63,9 @@ public class Canny : IOperation
   {
     try
     {
-      return mat.Canny(10, 100);
+      var canny = mat.Canny(10, 100);
+      Errored = false;
+      return canny;
     }
     catch (Exception)
     {
@@ -56,6 +73,7 @@ public class Canny : IOperation
     }
   }
   public int Id { get; set; }
+  public bool Errored { get; private set; }
 }
 
 public class Erode : IOperation
@@ -67,4 +85,5 @@ public class Erode : IOperation
     return mat.Erode(kernelMat, iterations: 100);
   }
   public int Id { get; set; }
+  public bool Errored => false;
 }
