@@ -16,23 +16,27 @@ public partial class AppliedFilters
         InitializeComponent();
         ViewModel = ContainerProvider.Resolve<AppliedFiltersViewModel>();
         DataContext = ViewModel;
+        
+        DragAndDropListBox = new ListBoxDragAndDrop();
+        DragAndDropListBox.Style = new Style(targetType: typeof(ListBox),
+            basedOn: (Style)ThemeManager.Current.DetectTheme()?.Resources["MahApps.Styles.ListBox"]);
+        DragAndDropListBox.Move = (source, target) => ViewModel?.MoveFilter(source, target);
+        DragAndDropListBox.ItemsSource = ViewModel?.FilterNames.Select(vm => vm.GetType().Name);
+        DragAndDropListBox.Margin = new Thickness(5);
+        ListBoxStackPanel.Children.Insert(0, DragAndDropListBox);
+            
         this.WhenActivated(disposable =>
         {
-            DragAndDropListBox = new ListBoxDragAndDrop();
-            DragAndDropListBox.Style = new Style(targetType: typeof(ListBox),
-                basedOn: (Style)ThemeManager.Current.DetectTheme()?.Resources["MahApps.Styles.ListBox"]);
-            DragAndDropListBox.Move = (source, target) => ViewModel?.MoveFilter(source, target);
-            DragAndDropListBox.DisposeWith(disposable);
-            DragAndDropListBox.ItemsSource = ViewModel?.FilterNames.Select(vm => vm.GetType().Name);
-            DragAndDropListBox.Margin = new Thickness(5);
-            
             this.OneWayBind(ViewModel,
                     model => model.FilterNames,
                     view => view.DragAndDropListBox.ItemsSource)
                 .DisposeWith(disposable);
             
-            ListBoxStackPanel.Children.Add(DragAndDropListBox);
+            this.OneWayBind(ViewModel,
+                    model => model.OperationsToAdd,
+                    view => view.AddFilterButtonContextMenu.ItemsSource)
+                .DisposeWith(disposable);
         });
     }
-    private ListBoxDragAndDrop DragAndDropListBox { get; set; }
+    private ListBoxDragAndDrop DragAndDropListBox { get; }
 }

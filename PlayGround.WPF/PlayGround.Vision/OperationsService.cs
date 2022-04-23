@@ -1,4 +1,5 @@
-﻿using DynamicData;
+﻿using System.Linq.Expressions;
+using DynamicData;
 
 namespace PlayGround.Vision;
 
@@ -17,26 +18,32 @@ public class OperationsService : IOperationsService
   private int _count;
   public OperationsService()
   {
-    Add(new Blur(_count++));
-    Add(new Erode(_count++));
-    Add(new Blur(_count++));
-    Add(new Erode(_count++));
+    Add(new KeepSame());
     Operations = _backingOperations.AsObservableList();
   }
 
   public void RemoveAt(int position)
   {
+    if (position < 0 || position > _backingOperations.Count) return;
     _backingOperations.RemoveAt(position);
   }
 
   public void RemoveWithId(int id)
   {
-    var operationToRemove = _backingOperations.Items.First(item => item.Id == id);
-    _backingOperations.Remove(operationToRemove);
+    try
+    {
+      var operationToRemove = _backingOperations.Items.First(item => item.Id == id);
+      _backingOperations.Remove(operationToRemove);
+    }
+    catch (Exception e)
+    {
+      // ignored
+    }
   }
 
   public void Add(IOperation operation)
   {
+    operation.Id = _count++;
     _backingOperations.Add(operation);
   }
 
@@ -45,10 +52,7 @@ public class OperationsService : IOperationsService
     if (sourceIndex < 0 || sourceIndex > _backingOperations.Count 
                         || targetIndex < 0 || targetIndex > _backingOperations.Count)
       return;
-    
-    var item = _backingOperations.Items.ElementAt(sourceIndex);
-    _backingOperations.RemoveAt(sourceIndex);
-    _backingOperations.Insert(targetIndex, item);
+    _backingOperations.Move(sourceIndex, targetIndex);
   }
   
   public IObservableList<IOperation> Operations { get; }

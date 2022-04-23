@@ -78,6 +78,7 @@ public class VideoService : IVideoService
   {
     IsPlaying = false;
     IsDisposed = true;
-    _videoCapture.Dispose();
+    if (!_videoCapture.IsDisposed)
+      _videoCapture.Dispose();
   }
 }

@@ -20,6 +20,12 @@ public class AppliedFiltersViewModel : ReactiveObject, IDisposable
             .Bind(out _backingFilterNames)
             .Subscribe()
             .DisposeWith(_compositeDisposable);
+        
+        OperationsToAdd =  AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => typeof(IOperation).IsAssignableFrom(p) && typeof(IOperation) != p)
+            .Select(item => new OperationToAddViewModel(item, operationsService))
+            .ToList();
     }
 
     public ReadOnlyObservableCollection<FilterOperationViewModel> FilterNames => _backingFilterNames;
@@ -28,6 +34,8 @@ public class AppliedFiltersViewModel : ReactiveObject, IDisposable
     {
         _operationsService.Move(sourceIndex, targetIndex);
     }
+
+    public List<OperationToAddViewModel> OperationsToAdd { get; }
 
     public void Dispose()
     {

@@ -32,7 +32,7 @@
                     </Style>
                 </Button.Style>
                 <Button.ContextMenu>
-                    <ContextMenu Name="AddFilterButtonContextMenu"/>
+                    <ContextMenu Name="AddFilterButtonContextMenu" Style="{StaticResource MahApps.Styles.ContextMenu}"/>
                 </Button.ContextMenu>
             </Button>
         </StackPanel>

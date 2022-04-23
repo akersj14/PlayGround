@@ -17,19 +17,20 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label Name="MainLabel"
                    Grid.Column="0"
                    FontFamily="{DynamicResource MahApps.Fonts.Family.Button}"
                    FontSize="{DynamicResource MahApps.Font.Size.Default}"/>
             <Button Name="OptionsButton" 
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Style="{DynamicResource MahApps.Styles.Button.Reveal}"
                     HorizontalAlignment="Right">
                 <iconPacks:BootstrapIcons Kind="ThreeDotsVertical"/>
             </Button>
             <Button Name="RemoveButton"
-                    Grid.Column="2"
+                    Grid.Column="3"
                     HorizontalAlignment="Right"
                     Style="{DynamicResource MahApps.Styles.Button.Reveal}">
                 <iconPacks:BootstrapIcons Kind="X"/>
