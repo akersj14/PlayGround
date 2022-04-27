@@ -14,6 +14,8 @@ public class ContainerProvider
     serviceCollection.AddSingleton<LiveFeedViewModel>();
     serviceCollection.AddSingleton<ProcessedImageFeedViewModel>();
     serviceCollection.AddSingleton<MainWindowViewModel>();
+    serviceCollection.AddTransient<DragDropCanvasViewModel>();
+    serviceCollection.AddTransient<DroppableObjectViewModel>();
     serviceCollection.AddSingleton<IOperationsService, OperationsService>();
     serviceCollection.AddSingleton<IImageProcessor, ImageProcessor>();
     serviceCollection.AddSingleton<IVideoService, VideoService>();
