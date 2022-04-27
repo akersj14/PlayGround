@@ -1,5 +1,6 @@
 ﻿using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using ReactiveUI;
 
 namespace PlayGround.Vision;
@@ -7,19 +8,18 @@ namespace PlayGround.Vision;
 public class FilterOperationViewModel : ReactiveObject, IDisposable
 {
     private bool _backingErrored;
-    private CompositeDisposable _compositeDisposable = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
     public FilterOperationViewModel(IOperation operation, IOperationsService operationsService)
     {
         if (operationsService == null) throw new ArgumentNullException(nameof(operationsService));
         Id = operation.Id;
-        Remove = ReactiveCommand.Create(() =>
+        Remove = ReactiveCommand.CreateFromTask(async () =>
         {
-            operationsService.RemoveWithId(Id);
+            await operationsService.RemoveWithId.Execute(Id);
         });
         Name = operation.GetType().Name;
-        operation
-            .WhenAnyValue(item => item.Errored)
-            .Subscribe(errored => Errored = errored)
+        operation.Errored
+            .Subscribe(error => Errored = error)
             .DisposeWith(_compositeDisposable);
     }
     public int Id { get; }

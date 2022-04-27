@@ -32,9 +32,9 @@ public class AppliedFiltersViewModel : ReactiveObject, IDisposable
 
     public ReadOnlyObservableCollection<FilterOperationViewModel> FilterNames => _backingFilterNames;
 
-    public void MoveFilter(int sourceIndex, int targetIndex)
+    public async Task MoveFilter(int sourceIndex, int targetIndex)
     {
-        _operationsService.Move(sourceIndex, targetIndex);
+        await _operationsService.Move.Execute((sourceIndex, targetIndex));
     }
 
     public List<OperationToAddViewModel> OperationsToAdd { get; }

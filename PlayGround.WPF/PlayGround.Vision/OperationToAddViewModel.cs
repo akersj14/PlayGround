@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using System.Reactive.Linq;
 using ReactiveUI;
 
 namespace PlayGround.Vision;
@@ -17,9 +18,9 @@ public class OperationToAddViewModel : ReactiveObject
         
         if (operationsService == null) 
             throw new ArgumentNullException(nameof(operationsService));
-        Add = ReactiveCommand.Create(() =>
+        Add = ReactiveCommand.CreateFromTask(async () =>
         {
-            operationsService.Add(operation);
+            await operationsService.Add.Execute(operation);
         });
         Content = operation.GetType().Name;
     }

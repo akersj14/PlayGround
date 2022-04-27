@@ -5,7 +5,7 @@
                  xmlns:local="clr-namespace:PlayGround.WPF"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 Title="MainWindow"
+                 Title="Main Window"
                  Width="800"
                  Height="450"
                  Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
