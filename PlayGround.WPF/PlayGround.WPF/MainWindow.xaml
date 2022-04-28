@@ -21,5 +21,8 @@
         <local:AppliedFilters/>
       </StackPanel>
     </mah:MetroTabItem>
+    <mah:MetroTabItem Header="Drag And Drop">
+      <local:DragDropPractice/>
+    </mah:MetroTabItem>
   </mah:MetroTabControl>
 </mah:MetroWindow>

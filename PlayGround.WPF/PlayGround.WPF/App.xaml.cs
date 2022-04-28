@@ -25,5 +25,4 @@ public partial class App
     _containerProvider.Dispose();
     base.OnExit(e);
   }
-
 }
