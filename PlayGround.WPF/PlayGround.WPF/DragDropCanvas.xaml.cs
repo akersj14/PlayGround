@@ -6,7 +6,7 @@ namespace PlayGround.WPF;
 
 public partial class DragDropCanvas : IDisposable
 {
-    private CompositeDisposable _compositeDisposable = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
     public DragDropCanvas()
     {
         InitializeComponent();

@@ -18,6 +18,6 @@ public class ImageProcessor : IImageProcessor
 
   public Mat Process(Mat mat)
   {
-    return _operationsService.Operations.Count == 0 ? mat.Clone() : _operationsService.Operations.Items.Aggregate(mat, (current, operation) => operation.Operate(current));
+    
   }
 }

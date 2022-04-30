@@ -14,4 +14,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayGround.Basics\PlayGround.Basics.csproj" />
+  </ItemGroup>
 </Project>

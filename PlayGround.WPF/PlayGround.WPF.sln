@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayGround.Vision", "PlayGr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Experimental", "Experimental\Experimental.csproj", "{D8A60882-C6E9-4E05-93DB-EF6B211F27FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGround.Basics", "PlayGround.Basics\PlayGround.Basics.csproj", "{98E95B1C-01CD-4298-98F7-4EBC636584E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D8A60882-C6E9-4E05-93DB-EF6B211F27FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8A60882-C6E9-4E05-93DB-EF6B211F27FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8A60882-C6E9-4E05-93DB-EF6B211F27FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E95B1C-01CD-4298-98F7-4EBC636584E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E95B1C-01CD-4298-98F7-4EBC636584E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E95B1C-01CD-4298-98F7-4EBC636584E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E95B1C-01CD-4298-98F7-4EBC636584E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
