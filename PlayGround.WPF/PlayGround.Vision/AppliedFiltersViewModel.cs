@@ -8,36 +8,38 @@ namespace PlayGround.Vision;
 
 public class AppliedFiltersViewModel : ReactiveObject, IDisposable
 {
-    private readonly ReadOnlyObservableCollection<FilterOperationViewModel> _backingFilterNames;
+    private readonly ReadOnlyObservableCollection<ListBoxBlockViewModel> _backingFilterNames;
     private readonly CompositeDisposable _compositeDisposable = new();
-    private readonly IOperationsService _operationsService;
-    public AppliedFiltersViewModel(IOperationsService operationsService)
+    private readonly IListOfBlocks _listOfBlocks;
+
+    public AppliedFiltersViewModel(IListOfBlocks listOfBlocks, IOperationsService operationsService)
     {
-        _operationsService = operationsService ?? throw new ArgumentNullException(nameof(operationsService));
-        operationsService
+        if (operationsService == null) throw new ArgumentNullException(nameof(operationsService));
+        _listOfBlocks = listOfBlocks ?? throw new ArgumentNullException(nameof(listOfBlocks));
+        _listOfBlocks
             .Operations
             .Connect()
             .Distinct()
-            .Transform(item => new FilterOperationViewModel(item, operationsService))
+            .Transform(item => new ListBoxBlockViewModel(item, _listOfBlocks))
             .Bind(out _backingFilterNames)
             .Subscribe()
             .DisposeWith(_compositeDisposable);
         
         OperationsToAdd =  AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
-            .Where(p => typeof(IOperation).IsAssignableFrom(p) && typeof(IOperation) != p)
-            .Select(item => new OperationToAddViewModel(item, operationsService))
+            .Where(p => typeof(IBlock).IsAssignableFrom(p) && typeof(IBlock) != p)
+            .Select(item => new BlockToAddViewModel(item, operationsService))
             .ToList();
     }
 
-    public ReadOnlyObservableCollection<FilterOperationViewModel> FilterNames => _backingFilterNames;
+    public ReadOnlyObservableCollection<ListBoxBlockViewModel> FilterNames => _backingFilterNames;
 
     public async Task MoveFilter(int sourceIndex, int targetIndex)
     {
-        await _operationsService.Move.Execute((sourceIndex, targetIndex));
+        await _listOfBlocks.Move.Execute((sourceIndex, targetIndex));
     }
 
-    public List<OperationToAddViewModel> OperationsToAdd { get; }
+    public List<BlockToAddViewModel> OperationsToAdd { get; }
 
     public void Dispose()
     {

@@ -21,7 +21,7 @@ public class LiveFeedService : BasicDisposable, ILiveFeedService
     public LiveFeedService(IVideoService videoService)
     {
         if (!videoService.IsPlaying)
-            videoService.Play(true);
+            videoService.Play();
         
         BitmapImage = _backingBitmapImage.AsObservable();
         MatImage = _backingMatImage.AsObservable();

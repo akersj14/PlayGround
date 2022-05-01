@@ -12,8 +12,8 @@ public class KeepSame : BasicDisposableBlock
     {
         Setup();
         Title = "Keep Same";
-        InputFieldNames = new List<string> {"Image Source"};
-        OutputFieldNames = new List<string> {"Result"};
+        InputFieldNames = new List<string> {"Image"};
+        OutputFieldNames = new List<string> {"Image"};
         InputTypes = new List<Type> {typeof(IObservable<Mat>)};
         OutputTypes = new List<Type> {typeof(IObservable<Mat>)};
         Outputs = new List<object?> {null};
@@ -47,8 +47,8 @@ public class Canny : BasicDisposableBlock
     {
         Setup();
         Title = "Canny";
-        InputFieldNames = new List<string> {"Image Source", "Threshold 1", "Threshold 2"};
-        OutputFieldNames = new List<string> {"Result"};
+        InputFieldNames = new List<string> {"Image", "Threshold 1", "Threshold 2"};
+        OutputFieldNames = new List<string> {"Image"};
         InputTypes = new List<Type> {typeof(IObservable<Mat>), typeof(IObservable<double>), typeof(IObservable<double>)};
         OutputTypes = new List<Type> {typeof(IObservable<Mat>)};
         Outputs = new List<object?> {null};

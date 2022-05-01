@@ -70,9 +70,9 @@ public partial class ListBoxDragAndDrop : IDisposable
     private void ListBoxItem_Drop(object sender, DragEventArgs e)
     {
         if (sender is not ListBoxItem item) return;
-        var target = item.DataContext as FilterOperationViewModel;
+        var target = item.DataContext as ListBoxBlockViewModel;
 
-        if (e.Data.GetData(typeof(FilterOperationViewModel)) is not FilterOperationViewModel source || target == null) return;
+        if (e.Data.GetData(typeof(ListBoxBlockViewModel)) is not ListBoxBlockViewModel source || target == null) return;
         var sourceIndex = Items.IndexOf(source); 
         var targetIndex = Items.IndexOf(target);
 

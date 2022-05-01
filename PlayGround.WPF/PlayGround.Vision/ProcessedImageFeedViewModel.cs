@@ -15,7 +15,7 @@ public class ProcessedImageFeedViewModel : ReactiveObject, IDisposable
         _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
         _backingProcessedImage = _videoService.ProcessedImage.ToProperty(this, nameof(ProcessedImage));
         if (!_videoService.IsPlaying)
-            _videoService.Play(true);
+            _videoService.Play();
     }
 
     public BitmapImage ProcessedImage => _backingProcessedImage.Value;

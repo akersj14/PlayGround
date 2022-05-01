@@ -64,8 +64,7 @@ public abstract class BasicBlock : IBlock
         
         Inputs[index] = property;
         Dependencies.Add(dependency);
-        Connect();
-        return true;
+        return Connect();
     }
 
     protected abstract bool Connect();
