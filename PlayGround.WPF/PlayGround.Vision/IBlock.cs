@@ -49,13 +49,16 @@ public abstract class BasicBlock : IBlock
     
     public bool AddDependency(string fieldName, IBlock dependency, Func<IBlock, object> getProperty)
     {
-        if (InputFieldNames.Count == 0 || !InputFieldNames.Contains(fieldName)) return false;
+        if (InputFieldNames.Count == 0 || !InputFieldNames.Contains(fieldName)) 
+            return false;
         var index = InputFieldNames.IndexOf(fieldName);
-        if (InputTypes.Count <= index) return false;
+        if (InputTypes.Count <= index)
+            return false;
         
         var expectedInputType = InputTypes[index];
         var property = getProperty(dependency);
-        if (property.GetType() != expectedInputType) return false;
+        if (property.GetType() != expectedInputType && !property.GetType().IsAssignableTo(expectedInputType)) 
+            return false;
         
         if (Inputs.Count == 0)
             Inputs = Enumerable.Repeat<object?>(null, InputFieldNames.Count).ToList();

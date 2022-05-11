@@ -4,15 +4,15 @@ using ReactiveUI;
 
 namespace PlayGround.WPF;
 
-public partial class FilterOperation 
+public partial class ListBoxBlock
 {
-    public FilterOperation()
+    public ListBoxBlock()
     {
         InitializeComponent();
 
         this.WhenActivated(disposable =>
         {
-            ViewModel = (FilterOperationViewModel) DataContext;
+            ViewModel = (ListBoxBlockViewModel) DataContext;
 
             this.OneWayBind(ViewModel,
                     model => model.Name,
@@ -23,6 +23,7 @@ public partial class FilterOperation
                     model => model.Remove,
                     view => view.RemoveButton)
                 .DisposeWith(disposable);
+            
             this.OneWayBind(ViewModel,
                     model => model.Errored,
                     view => view.RedDot.Visibility)

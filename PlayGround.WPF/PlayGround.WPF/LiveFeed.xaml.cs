@@ -13,7 +13,7 @@ public partial class LiveFeed
   public LiveFeed()
   {
     InitializeComponent();
-    ViewModel = ContainerProvider.Resolve<LiveFeedViewModel>();
+    ViewModel = VisionModule.Resolve<LiveFeedViewModel>();
     DataContext = ViewModel;
 
     this.WhenActivated(disposable =>

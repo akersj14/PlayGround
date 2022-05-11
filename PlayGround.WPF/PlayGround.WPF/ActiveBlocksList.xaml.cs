@@ -3,33 +3,32 @@ using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 using ControlzEx.Theming;
-using PlayGround.Core;
 using PlayGround.Vision;
 using ReactiveUI;
 
 namespace PlayGround.WPF;
 
-public partial class AppliedFilters 
+public partial class ActiveBlocksList 
 {
-    public AppliedFilters()
+    public ActiveBlocksList()
     {
         InitializeComponent();
-        ViewModel = ContainerProvider.Resolve<AppliedFiltersViewModel>();
-        DataContext = ViewModel;
+        DataContext = VisionModule.Resolve<ActiveBlockListViewModel>();
+        ViewModel = (ActiveBlockListViewModel) DataContext;
         
-        DragAndDropListBox = new ListBoxDragAndDrop();
-        DragAndDropListBox.Style = new Style(targetType: typeof(ListBox),
+        _listBoxDragAndDrop = new ListBoxDragAndDrop();
+        _listBoxDragAndDrop.Style = new Style(targetType: typeof(ListBox),
             basedOn: (Style)ThemeManager.Current.DetectTheme()?.Resources["MahApps.Styles.ListBox"]);
-        DragAndDropListBox.Move = (source, target) => ViewModel?.MoveFilter(source, target);
-        DragAndDropListBox.ItemsSource = ViewModel?.FilterNames.Select(vm => vm.GetType().Name);
-        DragAndDropListBox.Margin = new Thickness(5);
-        ListBoxStackPanel.Children.Insert(0, DragAndDropListBox);
+        _listBoxDragAndDrop.Move = (source, target) => ViewModel?.MoveFilter(source, target);
+        _listBoxDragAndDrop.ItemsSource = ViewModel?.FilterNames.Select(vm => vm.GetType().Name);
+        _listBoxDragAndDrop.Margin = new Thickness(5);
+        ListBoxStackPanel.Children.Insert(0, _listBoxDragAndDrop);
             
         this.WhenActivated(disposable =>
         {
             this.OneWayBind(ViewModel,
                     model => model.FilterNames,
-                    view => view.DragAndDropListBox.ItemsSource)
+                    view => view._listBoxDragAndDrop.ItemsSource)
                 .DisposeWith(disposable);
             
             this.OneWayBind(ViewModel,
@@ -38,5 +37,5 @@ public partial class AppliedFilters
                 .DisposeWith(disposable);
         });
     }
-    private ListBoxDragAndDrop DragAndDropListBox { get; }
+    private ListBoxDragAndDrop _listBoxDragAndDrop { get; }
 }

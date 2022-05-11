@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PlayGround.Core\PlayGround.Core.csproj" />
+    <ProjectReference Include="..\PlayGround.Vision\PlayGround.Vision.csproj" />
   </ItemGroup>
 
   <ItemGroup>

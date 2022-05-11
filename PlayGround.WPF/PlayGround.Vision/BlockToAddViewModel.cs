@@ -5,7 +5,7 @@ namespace PlayGround.Vision;
 
 public class BlockToAddViewModel
 {
-    public BlockToAddViewModel(Type type, IOperationsService operationsService)
+    public BlockToAddViewModel(Type type, IListOfBlocks listOfBlocks)
     {
         if (!type.IsAssignableTo(typeof(IBlock)))
         {
@@ -18,7 +18,7 @@ public class BlockToAddViewModel
         Name = block.Title;
         Add = ReactiveCommand.Create<Unit>(_ =>
         {
-            operationsService.Add.Execute(block);
+            listOfBlocks.AddBlock(block);
         });
     }
     public ReactiveCommand<Unit, Unit> Add { get; }

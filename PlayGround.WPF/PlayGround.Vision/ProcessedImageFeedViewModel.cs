@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows.Media.Imaging;
 using ReactiveUI;
 
@@ -8,22 +9,18 @@ public class ProcessedImageFeedViewModel : ReactiveObject, IDisposable
 {
     private readonly ObservableAsPropertyHelper<BitmapImage> _backingProcessedImage;
     private readonly CompositeDisposable _compositeDisposable = new();
-    private readonly IVideoService _videoService;
 
-    public ProcessedImageFeedViewModel(IVideoService videoService)
+    public ProcessedImageFeedViewModel(IProcessedImageService processedImageService)
     {
-        _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
-        _backingProcessedImage = _videoService.ProcessedImage.ToProperty(this, nameof(ProcessedImage));
-        if (!_videoService.IsPlaying)
-            _videoService.Play();
+        if (processedImageService == null) 
+            throw new ArgumentNullException(nameof(processedImageService));
+        _backingProcessedImage = processedImageService
+            .ProcessedImage
+            .Select(Converters.MatToBitmapImage)
+            .ToProperty(this, nameof(ProcessedImage));
     }
 
     public BitmapImage ProcessedImage => _backingProcessedImage.Value;
 
-    public void Dispose()
-    {
-        if (!_videoService.IsDisposed)
-            _videoService.Dispose();
-        _compositeDisposable.Dispose();
-    }
+    public void Dispose() => _compositeDisposable.Dispose();
 }

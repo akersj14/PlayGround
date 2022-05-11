@@ -1,6 +1,4 @@
 ﻿using System.Reactive.Disposables;
-using System.Windows.Controls;
-using PlayGround.Core;
 using PlayGround.Vision;
 using ReactiveUI;
 
@@ -11,7 +9,7 @@ public partial class ProcessedImageFeed
     public ProcessedImageFeed()
     {
         InitializeComponent();
-        ViewModel = ContainerProvider.Resolve<ProcessedImageFeedViewModel>();
+        ViewModel = VisionModule.Resolve<ProcessedImageFeedViewModel>();
         DataContext = ViewModel;
         
         this.WhenActivated(disposable =>

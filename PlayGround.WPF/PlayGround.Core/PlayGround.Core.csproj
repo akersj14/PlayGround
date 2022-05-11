@@ -12,8 +12,4 @@
     <PackageReference Include="ReactiveUI" Version="18.0.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PlayGround.Vision\PlayGround.Vision.csproj" />
-  </ItemGroup>
-
 </Project>

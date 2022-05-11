@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PlayGround.Core.ViewModels;
-using PlayGround.Vision;
 
 namespace PlayGround.Core;
 
@@ -11,15 +10,9 @@ public class ContainerProvider
   public ContainerProvider()
   {
     var serviceCollection = new ServiceCollection();
-    serviceCollection.AddSingleton<LiveFeedViewModel>();
-    serviceCollection.AddSingleton<ProcessedImageFeedViewModel>();
     serviceCollection.AddSingleton<MainWindowViewModel>();
-    serviceCollection.AddSingleton<AppliedFiltersViewModel>();
     serviceCollection.AddTransient<DragDropCanvasViewModel>();
     serviceCollection.AddTransient<DroppableObjectViewModel>();
-    serviceCollection.AddSingleton<IOperationsService, OperationsService>();
-    serviceCollection.AddSingleton<IImageProcessor, ImageProcessor>();
-    serviceCollection.AddSingleton<IVideoService, VideoService>();
     _serviceProvider = serviceCollection.BuildServiceProvider();
   }
 

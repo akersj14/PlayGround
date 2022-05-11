@@ -18,7 +18,7 @@ public class VideoService : IVideoService
   private readonly Subject<Mat> _backingOriginalImage = new();
   private readonly int _sleepTime;
 
-  public VideoService(IImageProcessor imageProcessor)
+  public VideoService()
   {
     OriginalImage = _backingOriginalImage.AsObservable();
     _videoCapture = VideoCapture.FromCamera(0);
@@ -48,8 +48,8 @@ public class VideoService : IVideoService
   public void Dispose()
   {
     IsPlaying = false;
-    IsDisposed = true;
     if (!_videoCapture.IsDisposed)
       _videoCapture.Dispose();
+    IsDisposed = true;
   }
 }

@@ -24,7 +24,6 @@ public partial class ListBoxDragAndDrop : IDisposable
                 if (args.LeftButton != MouseButtonState.Pressed ||
                     (!(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance) &&
                      !(Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))) return;
-                var lb = args.Source as ListBox;
                 var lbi = FindVisualParent<ListBoxItem>(((DependencyObject) args.OriginalSource));
                 if (lbi != null)
                 {
@@ -34,14 +33,14 @@ public partial class ListBoxDragAndDrop : IDisposable
             .DisposeWith(_compositeDisposable);
 
         var style = new Style(typeof(ListBoxItem));
-        style.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
+        style.Setters.Add(new Setter(AllowDropProperty, true));
         style.Setters.Add(
             new EventSetter(
-                ListBoxItem.PreviewMouseLeftButtonDownEvent,
+                PreviewMouseLeftButtonDownEvent,
                 new MouseButtonEventHandler(ListBoxItem_PreviewMouseLeftButtonDown)));
         style.Setters.Add(
             new EventSetter(
-                ListBoxItem.DropEvent, 
+                DropEvent, 
                 new DragEventHandler(ListBoxItem_Drop)));
             
         ItemContainerStyle = style;

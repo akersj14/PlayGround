@@ -6,13 +6,13 @@ using ReactiveUI;
 
 namespace PlayGround.Vision;
 
-public class AppliedFiltersViewModel : ReactiveObject, IDisposable
+public class ActiveBlockListViewModel : ReactiveObject, IDisposable
 {
     private readonly ReadOnlyObservableCollection<ListBoxBlockViewModel> _backingFilterNames;
     private readonly CompositeDisposable _compositeDisposable = new();
     private readonly IListOfBlocks _listOfBlocks;
 
-    public AppliedFiltersViewModel(IListOfBlocks listOfBlocks, IOperationsService operationsService)
+    public ActiveBlockListViewModel(IListOfBlocks listOfBlocks, IOperationsService operationsService)
     {
         if (operationsService == null) throw new ArgumentNullException(nameof(operationsService));
         _listOfBlocks = listOfBlocks ?? throw new ArgumentNullException(nameof(listOfBlocks));
@@ -20,15 +20,15 @@ public class AppliedFiltersViewModel : ReactiveObject, IDisposable
             .Operations
             .Connect()
             .Distinct()
-            .Transform(item => new ListBoxBlockViewModel(item, _listOfBlocks))
+            .Transform(item => new ListBoxBlockViewModel(item, operationsService, _listOfBlocks))
             .Bind(out _backingFilterNames)
             .Subscribe()
             .DisposeWith(_compositeDisposable);
         
-        OperationsToAdd =  AppDomain.CurrentDomain.GetAssemblies()
+        OperationsToAdd = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
-            .Where(p => typeof(IBlock).IsAssignableFrom(p) && typeof(IBlock) != p)
-            .Select(item => new BlockToAddViewModel(item, operationsService))
+            .Where(p => typeof(IBlock).IsAssignableFrom(p) && typeof(IBlock) != p && typeof(BasicBlock) != p && typeof(BasicDisposableBlock) != p)
+            .Select(item => new BlockToAddViewModel(item, _listOfBlocks))
             .ToList();
     }
 
@@ -41,8 +41,5 @@ public class AppliedFiltersViewModel : ReactiveObject, IDisposable
 
     public List<BlockToAddViewModel> OperationsToAdd { get; }
 
-    public void Dispose()
-    {
-        _compositeDisposable.Dispose();
-    }
+    public void Dispose() => _compositeDisposable.Dispose();
 }

@@ -9,8 +9,9 @@ public class LiveFeedBlock : BasicDisposableBlock
 {
     private readonly Subject<Mat> _backingLiveFeed = new();
     
-    public LiveFeedBlock(ILiveFeedService liveFeedService)
+    public LiveFeedBlock()
     {
+        var liveFeedService = VisionModule.Resolve<ILiveFeedService>();
         Setup();
         Title = "Live Feed Block";
         OutputFieldNames = new List<string> {"Image"};
@@ -36,18 +37,15 @@ public class LiveFeedBlock : BasicDisposableBlock
 
 public class ProcessedBlock : BasicDisposableBlock
 {
-    private readonly Subject<Mat> _backingProcessedFeed = new();
-    
+    private readonly IProcessedImageService _processedImageService;
     public ProcessedBlock()
     {
+        _processedImageService = VisionModule.Resolve<IProcessedImageService>();
+        
         Setup();
         Title = "Processed Block";
         InputFieldNames = new List<string> {"Image"};
         InputTypes = new List<Type> {typeof(IObservable<Mat>)};
-        OutputFieldNames = new List<string> {"Processed Feed"};
-        OutputTypes = new List<Type> {typeof(IObservable<Mat>)};
-        Outputs = new List<object?> {null};
-        Outputs[0] = _backingProcessedFeed.AsObservable();
     }
 
     protected override bool Connect()
@@ -57,7 +55,7 @@ public class ProcessedBlock : BasicDisposableBlock
             .Subscribe(mat =>
             {
                 _backingCompleted.OnNext(true);
-                _backingProcessedFeed.OnNext(mat);
+                _processedImageService.SetNextProcessedImage(mat);
             })
             .DisposeWith(CompositeDisposable);
         return true;
